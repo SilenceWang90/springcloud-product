@@ -2,14 +2,18 @@ package com.imooc.product.dataobject;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Table(name = "PRODUCT_INFO")
 @Data
+@Entity
 public class ProductInfo {
     //id
+    @Id
     private String productId;
     //名称
     private String productName;
