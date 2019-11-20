@@ -1,6 +1,7 @@
-package com.imooc.product.repository;
+package com.imooc.product.service.impl;
 
 import com.imooc.product.dataobject.ProductInfo;
+import com.imooc.product.service.ProductService;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,24 +12,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+/**
+ * @Classname ProductServiceImplTest
+ * @Description ProductServiceImplTest
+ * @Date 2019/11/20 10:19
+ * @Created by wangpeng116
+ */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ProductInfoRepositoryTest {
+public class ProductServiceImplTest {
     @Autowired
-    private ProductInfoRepository productInfoRepository;
+    private ProductService productService;
 
     @Test
-    public void findbyProductStatus() {
-        List<ProductInfo> list = productInfoRepository.findByProductStatus(0);
-        Assert.assertTrue(list.size() > 0);
-    }
-
-    @Test
-    public void findByProductIdIn() {
+    public void findList() {
         List<String> productIdList = Lists.newArrayList();
         productIdList.add("157875196366160022");
         productIdList.add("157875227953464068");
-        List<ProductInfo> list = productInfoRepository.findByProductIdIn(productIdList);
-        Assert.assertEquals(2, list.size());
+        List<ProductInfo> findList = productService.findList(productIdList);
+        Assert.assertEquals(2, findList.size());
     }
 }
