@@ -1,6 +1,7 @@
 package com.imooc.product.controller;
 
 import com.google.common.collect.Lists;
+import com.imooc.product.DTO.CartDTO;
 import com.imooc.product.VO.ProductInfoVO;
 import com.imooc.product.VO.ProductVO;
 import com.imooc.product.VO.ResultVO;
@@ -67,5 +68,10 @@ public class ProductController {
     @RequestMapping("/listForOrder")
     public List<ProductInfo> listForOrder(@RequestBody List<String> productIdList) {
         return productService.findList(productIdList);
+    }
+
+    @RequestMapping("/decrease")
+    public void decrease(@RequestBody List<CartDTO> cartDTOList){
+        productService.decreaseStock(cartDTOList);
     }
 }
