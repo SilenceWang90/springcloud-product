@@ -1,4 +1,4 @@
-package com.imooc.product.DTO;
+package com.imooc.product.dto;
 
 import lombok.Data;
 

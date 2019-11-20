@@ -1,6 +1,6 @@
 package com.imooc.product.service.impl;
 
-import com.imooc.product.DTO.CartDTO;
+import com.imooc.product.dto.CartDTO;
 import com.imooc.product.dataobject.ProductInfo;
 import com.imooc.product.enums.ProductStatusEnum;
 import com.imooc.product.enums.ResultEnum;
