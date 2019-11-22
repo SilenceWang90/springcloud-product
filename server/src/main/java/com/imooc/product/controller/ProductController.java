@@ -1,6 +1,5 @@
 package com.imooc.product.controller;
 
-import com.google.common.collect.Lists;
 import com.imooc.product.VO.ProductInfoVO;
 import com.imooc.product.VO.ProductVO;
 import com.imooc.product.VO.ResultVO;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,12 +47,12 @@ public class ProductController {
         //3、查询类目
         List<ProductCategory> categoryList = categoryService.findByCategoryTypeIn(categoryTypeList);
         //4、构造数据
-        List<ProductVO> productVOList = Lists.newArrayList();
+        List<ProductVO> productVOList = new ArrayList<>();
         for (ProductCategory productCategory : categoryList) {
             ProductVO productVO = new ProductVO();
             productVO.setCategoryName(productCategory.getCategoryName());
             productVO.setCategoryType(productCategory.getCategoryType());
-            List<ProductInfoVO> productInfoVOList = Lists.newArrayList();
+            List<ProductInfoVO> productInfoVOList = new ArrayList<>();
             for (ProductInfo productInfo : productInfoList) {
                 if (productInfo.getCategoryType().equals(productCategory.getCategoryType())) {
                     ProductInfoVO productInfoVO = new ProductInfoVO();
@@ -72,7 +72,7 @@ public class ProductController {
     }
 
     @RequestMapping("/decreaseStock")
-    public void decreaseStock(@RequestBody List<DecreaseStockInput> cartDTOList){
+    public void decreaseStock(@RequestBody List<DecreaseStockInput> cartDTOList) {
         productService.decreaseStock(cartDTOList);
     }
 }
