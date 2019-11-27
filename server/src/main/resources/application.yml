@@ -1,17 +1,17 @@
-spring:
-  application:
-    name: product
-  datasource:
-    #参数设定字符集，否则链接数据时会因为字符集报错
-    #高版本的mysql连接时需要ssl配置，如果没有设置为false。
-    url: jdbc:mysql://127.0.0.1:3306/wptest1?useUnicode=true&useSSL=false&characterEncoding=utf8
-    username: root
-    password: Wangpeng90
-    driver-class-name: com.mysql.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
-  jpa:
-    show-sql: true
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+#spring:
+#  application:
+#    name: product
+#  datasource:
+#    #参数设定字符集，否则链接数据时会因为字符集报错
+#    #高版本的mysql连接时需要ssl配置，如果没有设置为false。
+#    url: jdbc:mysql://127.0.0.1:3306/wptest1?useUnicode=true&useSSL=false&characterEncoding=utf8
+#    username: root
+#    password: Wangpeng90
+#    driver-class-name: com.mysql.jdbc.Driver
+#    type: com.alibaba.druid.pool.DruidDataSource
+#  jpa:
+#    show-sql: true
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/

@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: product
+  cloud:
+    config:
+      discovery:
+        #启用配置中心客户端
+        enabled: true
+        #注册中心服务名称，如果写错，则从127.0.0.1:8888服务中查找
+        service-id: config-server
+      #文件名称中的profile(环境名称)
+      profile: dev
+      #文件名称中的label(分支名称)
+      label: master
+      name: product
+  jpa:
+    show-sql: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
