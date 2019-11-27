@@ -1,5 +1,7 @@
 package com.imooc.product.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imooc.product.common.DecreaseStockInput;
 import com.imooc.product.common.ProductInfoOutput;
 import com.imooc.product.dataobject.ProductInfo;
@@ -9,6 +11,7 @@ import com.imooc.product.exception.ProductException;
 import com.imooc.product.repository.ProductInfoRepository;
 import com.imooc.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductInfoRepository productInfoRepository;
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     @Override
     public List<ProductInfo> findUpAll() {
@@ -41,6 +46,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void decreaseStock(List<DecreaseStockInput> decreaseStockInputList) throws ProductException {
+        ObjectMapper objectMapper = new ObjectMapper();
         decreaseStockInputList.forEach(obj -> {
             Optional<ProductInfo> opt = productInfoRepository.findById(obj.getProductId());
             //查询不到结果，抛出异常，提示产品不存在
@@ -53,6 +59,12 @@ public class ProductServiceImpl implements ProductService {
                 optional.orElseThrow(() -> new ProductException(ResultEnum.PRODUCT_STOCK_ERROR));
                 productInfo.setProductStock(result);
                 productInfoRepository.save(productInfo);
+                //发送mq消息
+                try {
+                    amqpTemplate.convertAndSend("productInfo", objectMapper.writeValueAsString(productInfo));
+                } catch (JsonProcessingException e) {
+                    log.error("消息转换json异常:{}", e);
+                }
             });
         });
     }
