@@ -61,7 +61,9 @@ public class ProductServiceImpl implements ProductService {
                 productInfoRepository.save(productInfo);
                 //发送mq消息
                 try {
-                    amqpTemplate.convertAndSend("productInfo", objectMapper.writeValueAsString(productInfo));
+                    ProductInfoOutput productInfoOutput = new ProductInfoOutput();
+                    BeanUtils.copyProperties(productInfo, productInfoOutput);
+                    amqpTemplate.convertAndSend("productInfo", objectMapper.writeValueAsString(productInfoOutput));
                 } catch (JsonProcessingException e) {
                     log.error("消息转换json异常:{}", e);
                 }
