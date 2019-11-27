@@ -2,6 +2,7 @@ package com.imooc.product.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.imooc.product.common.DecreaseStockInput;
 import com.imooc.product.common.ProductInfoOutput;
 import com.imooc.product.dataobject.ProductInfo;
@@ -44,9 +45,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
+
     public void decreaseStock(List<DecreaseStockInput> decreaseStockInputList) throws ProductException {
         ObjectMapper objectMapper = new ObjectMapper();
+        List<ProductInfo> productInfoList = decreaseStockProcess(decreaseStockInputList);
+        //发送mq消息
+        try {
+            List<ProductInfoOutput> productInfoOutputList = productInfoList.stream().map(obj -> {
+                ProductInfoOutput productInfoOutput = new ProductInfoOutput();
+                BeanUtils.copyProperties(obj, productInfoOutput);
+                return productInfoOutput;
+            }).collect(Collectors.toList());
+            amqpTemplate.convertAndSend("productInfo", objectMapper.writeValueAsString(productInfoOutputList));
+        } catch (JsonProcessingException e) {
+            log.error("消息转换json异常:{}", e);
+        }
+    }
+
+    @Transactional
+    public List<ProductInfo> decreaseStockProcess(List<DecreaseStockInput> decreaseStockInputList) throws ProductException {
+        List<ProductInfo> productInfoList = Lists.newArrayList();
         decreaseStockInputList.forEach(obj -> {
             Optional<ProductInfo> opt = productInfoRepository.findById(obj.getProductId());
             //查询不到结果，抛出异常，提示产品不存在
@@ -59,15 +77,9 @@ public class ProductServiceImpl implements ProductService {
                 optional.orElseThrow(() -> new ProductException(ResultEnum.PRODUCT_STOCK_ERROR));
                 productInfo.setProductStock(result);
                 productInfoRepository.save(productInfo);
-                //发送mq消息
-                try {
-                    ProductInfoOutput productInfoOutput = new ProductInfoOutput();
-                    BeanUtils.copyProperties(productInfo, productInfoOutput);
-                    amqpTemplate.convertAndSend("productInfo", objectMapper.writeValueAsString(productInfoOutput));
-                } catch (JsonProcessingException e) {
-                    log.error("消息转换json异常:{}", e);
-                }
+                productInfoList.add(productInfo);
             });
         });
+        return productInfoList;
     }
 }
