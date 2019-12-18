@@ -2,6 +2,7 @@ package com.imooc.product.client;
 
 import com.imooc.product.common.DecreaseStockInput;
 import com.imooc.product.common.ProductInfoOutput;
+import com.imooc.product.fallback.ProductClientFallBack;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import java.util.List;
  * @Date 2019/11/20 16:45
  * @Created by wangpeng116
  */
-@FeignClient(name = "product")
+@FeignClient(name = "product", fallback = ProductClientFallBack.class)
 @RequestMapping("/product")
 public interface ProductClient {
     @RequestMapping("/listForOrder")

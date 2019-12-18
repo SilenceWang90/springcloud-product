@@ -42,7 +42,7 @@ public class ProductController {
      * @return
      */
     @RequestMapping("/list")
-    public ResultVO<ProductVO> list(HttpServletRequest httpServletRequest) {
+    public ResultVO<ProductVO> list() {
         log.info("休眠结束");
         //1、查询所有在架的商品
         List<ProductInfo> productInfoList = productService.findUpAll();
