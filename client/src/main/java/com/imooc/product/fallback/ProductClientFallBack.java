@@ -3,7 +3,6 @@ package com.imooc.product.fallback;
 import com.imooc.product.client.ProductClient;
 import com.imooc.product.common.DecreaseStockInput;
 import com.imooc.product.common.ProductInfoOutput;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
