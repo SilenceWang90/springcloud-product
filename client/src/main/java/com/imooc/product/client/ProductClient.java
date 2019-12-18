@@ -15,7 +15,7 @@ import java.util.List;
  * @Date 2019/11/20 16:45
  * @Created by wangpeng116
  */
-@FeignClient(name = "product", fallback = ProductClientFallBack.class)
+@FeignClient(name = "product")
 @RequestMapping("/product")
 public interface ProductClient {
     @RequestMapping("/listForOrder")
