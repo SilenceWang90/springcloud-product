@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+//@Component
 public class ProductClientFallBack implements ProductClient {
     @Override
     public List<ProductInfoOutput> listForOrder(List<String> productIdList) {
