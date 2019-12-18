@@ -7,12 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * @Classname ProductClientFallBack
- * @Description 降级服务
- * @Date 2019/12/18 18:37
- * @Created by wangpeng116
- */
 @Component
 public class ProductClientFallBack implements ProductClient {
     @Override
