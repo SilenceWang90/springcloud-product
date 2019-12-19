@@ -23,4 +23,5 @@ public interface ProductClient {
     @RequestMapping("/decreaseStock")
     void decreaseStock(@RequestBody List<DecreaseStockInput> cartDTOList);
 
+
 }
